@@ -103,6 +103,7 @@ public class Polynom
 		//Проверяем на наличе символов "Е" и выдаем ошибку, если их слишком много
 		checkForESimbol(argument, argumentName);
 		
+		//Безопасно парсим наш аргумент в double
 		double value = SafeDoubleParser.parseDouble(argument);
 		
 		if(Math.abs(value) >= Double.MAX_VALUE)
