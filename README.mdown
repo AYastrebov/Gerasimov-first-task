@@ -8,3 +8,5 @@
 подробности тут http://habrahabr.ru/blogs/java/113762/
 
 На JDK 1.7 такого уже нет.
+
+Метод "parseDouble" был взят отсюда http://blog.headius.com/2011/02/working-around-java-doubleparsedouble.html
