@@ -1,16 +1,10 @@
 
-
-import java.math.BigDecimal;
-import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
 
 
 public class Polynom 
 {
 	private static final double max = Double.MAX_VALUE;
-	private static final char[] eSimbols = {'E', 'e'};
-	private final static Pattern NUMBER_PATTERN = Pattern.compile("^([+-]?\\d*\\.?\\d*([eE][+-]?)?\\d*).*");
 	/**
 	 * @param args
 	 * @throws ParseException 
@@ -109,7 +103,7 @@ public class Polynom
 		//Проверяем на наличе символов "Е" и выдаем ошибку, если их слишком много
 		checkForESimbol(argument, argumentName);
 		
-		double value = parseDouble(argument);
+		double value = SafeDoubleParser.parseDouble(argument);
 		
 		if(Math.abs(value) >= Double.MAX_VALUE)
 		{			
@@ -123,7 +117,14 @@ public class Polynom
 	
 	private static void checkForESimbol(String argument, String argumentName) 
 	{
-		if (!(argument.contains("E") || argument.contains("e"))) return;		
+		if (!(argument.contains("E") || argument.contains("e")))
+		{
+			return;		
+		}
+		else
+		{
+			argument = argument.replaceAll("e", "E");
+		}
 		
 		boolean hasE = false;
 		boolean hasMoreThanOneE = false;
@@ -134,19 +135,16 @@ public class Polynom
 		{
 			if (!Character.isDigit(argument.charAt(i))) 
 			{
-				for (char ch  : eSimbols) 
+				if ('E' == argument.charAt(i)) 
 				{
-					if (ch == argument.charAt(i)) 
+					if (hasE) 
 					{
-						if (hasE) 
-						{
-							errorPos = i;
-							hasMoreThanOneE = true;
-							break;
-						}
-						ePos = i;
-						hasE = true;
+						errorPos = i;
+						hasMoreThanOneE = true;
+						break;
 					}
+					ePos = i;
+					hasE = true;
 				}
 			}
 		}
@@ -218,39 +216,4 @@ public class Polynom
 			}	
 		}
 	}
-	
-	private static double parseDouble(String value) 
-	{
-        String normalString = normalizeDoubleString(value);
-        int offset = normalString.indexOf('E');
-        BigDecimal base;
-        int exponent;
-        if (offset == -1) 
-        {
-            base = new BigDecimal(value);
-            exponent = 0;
-        } 
-        else 
-        {
-            base = new BigDecimal(normalString.substring(0, offset));
-            exponent = Integer.parseInt(normalString.charAt(offset + 1) == '+' ?
-                normalString.substring(offset + 2) :
-                normalString.substring(offset + 1));
-        }
-        return base.scaleByPowerOfTen(exponent).doubleValue();
-    }
-	
-	private static String normalizeDoubleString(String strValue) 
-	{
-        // Clean-up string representation so that it could be understood
-        // by Java's BigDecimal. Not terribly efficient for now.
-        // 1. MRI allows d and D as exponent separators
-        strValue = strValue.replaceFirst("[edD]", "E");
-        // 2. MRI allows underscores anywhere
-        strValue = strValue.replaceAll("_", "");
-        // 3. MRI ignores the trailing junk
-        strValue = NUMBER_PATTERN.matcher(strValue).replaceFirst("$1");
-        return strValue;
-    }
-
 }
