@@ -123,6 +123,8 @@ public class Polynom
 	
 	private static void checkForESimbol(String argument, String argumentName) 
 	{
+		if (!(argument.contains("E") || argument.contains("e"))) return;		
+		
 		boolean hasE = false;
 		boolean hasMoreThanOneE = false;
 		int errorPos = 0;
