@@ -1,12 +1,16 @@
 Герасимов, 3 курс СО/МО 1я задача
 ===========================
 
-Будет зависать на значении 2.2250738585072012e-308
-подробности тут http://habrahabr.ru/blogs/java/112948/
+Double.parseDouble падает на значениях из интервала
+[2.2250738585072011e-308, 2.2250738585072013e-308]
 
-На самом деле баг уже исправлен и проявляется только на старых версиях JDK
-подробности тут http://habrahabr.ru/blogs/java/113762/
+Подробности тут: http://habrahabr.ru/blogs/java/112948/
 
+На самом деле баг уже исправлен и проявляется только на старых версиях JDK.
 На JDK 1.7 такого уже нет.
+Подробности тут http://habrahabr.ru/blogs/java/113762/
 
-Метод "parseDouble" был взят отсюда http://blog.headius.com/2011/02/working-around-java-doubleparsedouble.html
+Для того, что-бы все работало на более старых версиях JDK,
+был применен метод, описанный тут 
+http://extremestjython.blogspot.com/2011/02/no-more-java-double-trouble.html
+

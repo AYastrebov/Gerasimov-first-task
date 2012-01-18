@@ -1,8 +1,7 @@
 
 /**
  * Безопасный метод парсинга значений double
- * <p>
- * Предотвращает известный Java bug.
+ * Предотвращает известный Java bug c 2.2250738585072012e-308.
  */
 final public class SafeDoubleParser extends SafeDecimalParser 
 {
